@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mediacal Record System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Mediacal Record System</a>
+        <div class="d-flex ms-auto">
+          <div class="dropdown">
+            <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">계정</a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+              <li><a class="dropdown-item" href="#" id="acctLogin">로그인</a></li>
+              <li><a class="dropdown-item" href="#" id="acctSignup">회원가입</a></li>
+              <li><a class="dropdown-item" href="#" id="acctProfile" style="display:none">내 정보</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="#" id="acctLogout">로그아웃</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <main class="container py-4">
+      <div class="mb-3">
+        <div class="btn-group" role="group" aria-label="메뉴">
+          <button class="btn btn-outline-secondary" id="menuPatients">환자 목록</button>
+          <button class="btn btn-outline-secondary" id="menuStaff">직원 목록</button>
+          <button class="btn btn-outline-secondary" id="menuNewPatient">신규 환자 등록</button>
+          <button class="btn btn-outline-secondary" id="menuStartEncounter">신규 진료 시작</button>
+          <button class="btn btn-outline-secondary" id="menuAdmin" style="display:none">관리자</button>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h1 class="h4 mb-0 text-white-50">환자 목록</h1>
+          <div class="text-muted small">최근 진료 순으로 정렬됩니다</div>
+        </div>
+        <div>
+          <button id="newPatient" class="btn btn-outline-light me-2"><i class="bi bi-person-plus"></i> 신규 환자</button>
+          <button id="refresh" class="btn btn-light"><i class="bi bi-arrow-clockwise"></i> 새로고침</button>
+        </div>
+      </div>
+      <div id="alert" class="mb-3"></div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+            <input id="search" class="form-control" placeholder="이름 또는 전화번호">
+          </div>
+        </div>
+      </div>
+
+      <div id="patientsGrid" class="row g-3" aria-live="polite"></div>
+      <div id="staffSection">
+        <hr>
+        <h2 class="h5 mt-3">병원 직원</h2>
+        <div class="text-muted small mb-2">의료진 및 직원 목록입니다</div>
+        <div id="staffList" class="row g-3" aria-live="polite"></div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Patient Detail Modal -->
+    <div class="modal fade" id="patientModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="patientModalLabel">환자 상세</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="patientInfo" class="mb-3"></div>
+            <input type="hidden" id="patientId">
+
+            <h6>진료 이력</h6>
+            <div id="encounterList" class="list-group mb-3"></div>
+            <div class="mb-3"><button id="startEncounterBtn" class="btn btn-sm btn-success">진료 시작</button></div>
+
+            <div id="encounterDetail" style="display:none;">
+              <div class="mb-3 d-flex align-items-center">
+                <label class="me-2 mb-0" for="enc_visitType"><strong>진료유형:</strong></label>
+                <select id="enc_visitType" class="form-select" style="width:200px;">
+                  <option value="">-- 선택 --</option>
+                  <option value="OUTPATIENT">외래</option>
+                  <option value="EMERGENCY">응급</option>
+                  <option value="INPATIENT">입원</option>
+                </select>
+                <button id="saveVisitTypeBtn" class="btn btn-sm btn-primary ms-2">저장</button>
+              </div>
+              <ul class="nav nav-tabs" id="encTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="soap-tab" data-bs-toggle="tab" data-bs-target="#soap" type="button" role="tab">진료기록 (SOAP)</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="presc-tab" data-bs-toggle="tab" data-bs-target="#presc" type="button" role="tab">처방</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pt-tab" data-bs-toggle="tab" data-bs-target="#pt" type="button" role="tab">물리치료</button>
+                </li>
+              </ul>
+              <div class="tab-content border p-3" id="encTabsContent">
+                <div class="tab-pane fade show active" id="soap" role="tabpanel">
+                  <div id="soapList"></div>
+                  <hr>
+                  <h6>새 진료기록 추가</h6>
+                  <div class="mb-2"><label>Subjective</label><textarea id="new_subjective" class="form-control"></textarea></div>
+                  <div class="mb-2"><label>Objective</label><textarea id="new_objective" class="form-control"></textarea></div>
+                  <div class="mb-2"><label>Assessment</label><textarea id="new_assessment" class="form-control"></textarea></div>
+                  <div class="mb-2"><label>Plan</label><textarea id="new_plan" class="form-control"></textarea></div>
+                  <button id="addSoapBtn" class="btn btn-sm btn-primary">추가</button>
+                </div>
+                <div class="tab-pane fade" id="presc" role="tabpanel">
+                  <div id="prescList"></div>
+                  <hr>
+                  <h6>새 처방 추가</h6>
+                  <div class="mb-2"><label>메모</label><input id="new_presc_note" class="form-control"></div>
+                  <button id="addPrescBtn" class="btn btn-sm btn-primary">처방 추가</button>
+                </div>
+                <div class="tab-pane fade" id="pt" role="tabpanel">
+                  <div id="ptList"></div>
+                  <div id="otList" class="mt-3"></div>
+                  <hr>
+                  <h6>새 물리치료 기록 추가</h6>
+                  <div class="row">
+                    <div class="col mb-2">
+                      <label>치료 종류</label>
+                      <select id="new_therapy_kind" class="form-select">
+                        <option value="PT">물리치료 (PT)</option>
+                        <option value="OT">작업치료 (OT)</option>
+                      </select>
+                    </div>
+                    <div class="col mb-2"><label>기술/종류</label><input id="new_pt_type" class="form-control"></div>
+                    <div class="col mb-2"><label>부위</label><input id="new_pt_part" class="form-control"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col mb-2"><label>시간(분)</label><input id="new_pt_duration" type="number" class="form-control"></div>
+                    <div class="col mb-2"><label>강도</label><select id="new_pt_intensity" class="form-select"><option value="LOW">LOW</option><option value="MEDIUM">MEDIUM</option><option value="HIGH">HIGH</option></select></div>
+                  </div>
+                  <div class="mb-2"><label>환자 반응</label><input id="new_pt_response" class="form-control"></div>
+                  <button id="addPtBtn" class="btn btn-sm btn-primary">추가</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button id="editPatientBtn" type="button" class="btn btn-outline-primary">수정</button>
+            <button id="deletePatientBtn" type="button" class="btn btn-danger">삭제</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient Form Modal -->
+    <div class="modal fade" id="patientFormModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="patientFormLabel">환자 등록</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="patientForm">
+              <input type="hidden" id="patientId">
+              <div class="mb-3">
+                <label class="form-label">이름</label>
+                <input id="pf_name" class="form-control" required>
+              </div>
+              <div class="row">
+                <div class="col mb-3">
+                  <label class="form-label">생년월일</label>
+                  <input id="pf_birthDate" type="date" class="form-control">
+                </div>
+                <div class="col mb-3">
+                  <label class="form-label">성별</label>
+                  <select id="pf_gender" class="form-select">
+                    <option value="">선택</option>
+                    <option value="M">M</option>
+                    <option value="F">F</option>
+                    <option value="O">O</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">전화</label>
+                <input id="pf_phone" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">주소</label>
+                <input id="pf_address" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">보험 유형</label>
+                <select id="pf_insuranceType" class="form-select">
+                  <option value="">선택</option>
+                  <option value="LOCAL">지역</option>
+                  <option value="WORK">직장</option>
+                  <option value="AUTO">자동차보험</option>
+                  <option value="TYPE1">1종보호</option>
+                  <option value="TYPE2">2종보호</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="savePatientBtn" type="button" class="btn btn-primary">저장</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          </div>
+        </div>
+      </div>
+
+          <!-- Login Modal -->
+          <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">로그인</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="loginForm">
+                    <div class="mb-3"><label class="form-label">아이디</label><input id="login_loginId" class="form-control" required></div>
+                    <div class="mb-3"><label class="form-label">비밀번호</label><input id="login_password" type="password" class="form-control" required></div>
+                  </form>
+                  <div id="loginError" class="text-danger small"></div>
+                </div>
+                <div class="modal-footer">
+                  <button id="loginSubmit" class="btn btn-primary">로그인</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Signup Modal -->
+          <div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">회원가입</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="signupForm">
+                    <div class="mb-3"><label class="form-label">이름</label><input id="signup_name" class="form-control" required></div>
+                    <div class="mb-3"><label class="form-label">아이디</label><input id="signup_loginId" class="form-control" required></div>
+                    <div class="mb-3"><label class="form-label">비밀번호</label><input id="signup_password" type="password" class="form-control" required></div>
+                    <div class="mb-3"><label class="form-label">역할</label>
+                      <select id="signup_role" class="form-select">
+                        <option value="DOCTOR">Doctor</option>
+                        <option value="NURSE">Nurse</option>
+                        <option value="PT">PT</option>
+                        <option value="ADMIN">Admin</option>
+                      </select>
+                    </div>
+                  </form>
+                  <div id="signupError" class="text-danger small"></div>
+                </div>
+                <div class="modal-footer">
+                  <button id="signupSubmit" class="btn btn-primary">회원가입</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    
+        <!-- Profile Modal -->
+        <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">내 정보 수정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="profileForm">
+                  <div class="mb-2"><label class="form-label">이름</label><input id="p_name" class="form-control"></div>
+                  <div class="mb-2"><label class="form-label">전화</label><input id="p_phone" class="form-control"></div>
+                  <div class="mb-2"><label class="form-label">생년월일</label><input id="p_birthDate" type="date" class="form-control"></div>
+                  <div class="mb-2"><label class="form-label">주소</label><input id="p_address" class="form-control"></div>
+                  <div class="mb-2"><label class="form-label">새 비밀번호 (선택)</label><input id="p_password" type="password" class="form-control"></div>
+                </form>
+                <div id="profileError" class="text-danger small"></div>
+              </div>
+              <div class="modal-footer">
+                <button id="profileSaveBtn" class="btn btn-primary">저장</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="container d-flex justify-content-between align-items-center">
+        <div class="muted">© 2025 Mediacal Record System by Michael</div>
+        <div class="text-end muted">Contact: michaela00u@gmail.com</div>
+      </div>
+    </footer>
+  </body>
+</html>

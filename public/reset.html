@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EMR - 비밀번호 재설정</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+  </head>
+  <body>
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <div class="card p-4">
+            <h4 class="mb-3">비밀번호 재설정</h4>
+            <div id="resetStep1">
+              <p>등록된 아이디로 재설정 토큰을 요청하세요. (개발환경에서는 토큰을 화면에 표시합니다)</p>
+              <form onsubmit="return false;">
+                <div class="mb-3"><label>아이디</label><input id="r_loginId" class="form-control"></div>
+                <div class="d-flex justify-content-between">
+                  <button type="button" id="requestResetBtn" class="btn btn-primary">토큰 요청</button>
+                  <a href="/login.html" class="btn btn-link">로그인으로 돌아가기</a>
+                </div>
+              </form>
+            </div>
+
+            <div id="resetStep2" style="display:none;">
+              <p>메일로 받은 토큰과 새 비밀번호를 입력하세요.</p>
+              <form onsubmit="return false;">
+                <div class="mb-3"><label>토큰</label><input id="r_token" class="form-control"></div>
+                <div class="mb-3"><label>새 비밀번호</label><input id="r_newPassword" type="password" class="form-control"></div>
+                <div class="d-flex justify-content-between">
+                  <button type="button" id="doResetBtn" class="btn btn-success">비밀번호 변경</button>
+                  <a href="/login.html" class="btn btn-link">로그인으로 돌아가기</a>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/auth.js"></script>
+  </body>
+</html>
