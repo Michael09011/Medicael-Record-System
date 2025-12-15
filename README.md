@@ -17,7 +17,7 @@
 - DB: MySQL (개발), SQLite (테스트)
 - 프론트엔드: HTML / CSS / Vanilla JS (정적 파일)
 
-**Languages**: [English](README.en.md) · [日本語](README.ja.md)
+**Languages**:[Korean] · [English](README.en.md) · [日本語](README.ja.md)
 
 **사전 요구 사항**
 - Node.js v16 이상
