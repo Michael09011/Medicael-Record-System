@@ -141,3 +141,5 @@ curl -X POST http://localhost:3000/api/translate \
 교육 및 개인 학습용으로 제공됩니다. 상업적 사용 시 별도 검토하세요.
 
 ---
+
+문의: michaela00u@gmail.com
