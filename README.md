@@ -1,71 +1,43 @@
-🏥 EMR (Electronic Medical Record)
+**프로젝트: EMR (Electronic Medical Record)**
 
-간단한 교육·개발용 EMR(전자 의무 기록) 웹 애플리케이션 템플릿입니다.
-Node.js 기반의 백엔드 API와 **정적 프론트엔드(public/)**를 하나의 저장소에서 함께 제공합니다.
+간단한 교육·개발용 전자 의무 기록(EMR) 웹 애플리케이션 템플릿입니다. 이 저장소는 Node.js 기반의 Express API와 정적 프론트엔드(`public/`)를 함께 제공합니다. 로컬에서 빠르게 실행하여 도메인 구조를 학습하거나 기능을 확장하는 목적에 적합합니다.
 
-로컬 환경에서 빠르게 실행하며, EMR 도메인 구조 학습 및 기능 확장을 목적으로 합니다.
+**주요 기능**
+- Express 기반 REST API
+- Sequelize ORM을 통한 모델 관리
+- MySQL 또는 SQLite 지원 (개발/테스트용)
+- 정적 프론트엔드 제공 (`public/`)
+- 기본 EMR 모델: 환자(Patient), 방문(Encounter), 처방(Prescription) 등
 
-✨ 주요 특징
+**기술 스택**
+- 언어: JavaScript (Node.js)
+- 웹 프레임워크: Express
+- ORM: Sequelize
+- DB: MySQL (개발), SQLite (테스트)
+- 프론트엔드: HTML / CSS / Vanilla JS (정적 파일)
 
-백엔드 + 프론트엔드 통합 저장소
+**사전 요구 사항**
+- Node.js v16 이상
+- MySQL (또는 로컬 테스트용 SQLite)
 
-Express 기반 REST API
+**빠른 시작**
+1. 의존성 설치
 
-Sequelize ORM 사용
-
-MySQL / SQLite 지원
-
-정적 프론트엔드(HTML/CSS/JS) 제공
-
-환자 / 방문(Encounter) / 처방(Prescription) 기본 EMR 모델 포함
-
-🛠 기술 스택
-구분	기술
-언어	JavaScript (Node.js)
-백엔드	Express
-ORM	Sequelize
-DB	MySQL (개발), SQLite (테스트용)
-프론트엔드	HTML / CSS / JavaScript (정적 파일)
-📁 프로젝트 구조
-EMR/
-├── server.js            # 서버 엔트리포인트
-├── app.js               # Express 앱 설정
-├── models/              # Sequelize 모델 정의
-│   ├── patient.js
-│   ├── encounter.js
-│   └── prescription.js
-├── routes/              # API 라우트
-│   ├── patients.js
-│   ├── encounters.js
-│   ├── prescriptions.js
-│   └── auth.js
-├── public/              # 정적 프론트엔드 파일
-│   └── index.html
-├── create_database.sql  # DB 초기화용 SQL (선택)
-├── .env.example         # 환경 변수 예시
-└── README.md
-
-✅ 사전 요구 사항
-
-Node.js v16 이상
-
-MySQL
-또는
-
-로컬 테스트용 SQLite
-
-🚀 설치 및 실행 (로컬)
-1️⃣ 의존성 설치
-cd EMR
+```bash
 npm install
+```
 
-2️⃣ 환경 변수 설정
+2. 환경 변수 설정
 
-.env.example 파일을 복사하여 .env 파일을 생성한 후 DB 정보를 입력합니다.
+`.env.example`를 복사해 `.env`를 만든 뒤 필요한 값을 설정하세요.
 
-cp .env.example .env
+```bash
+copy .env.example .env  # Windows (PowerShell / CMD)
+```
 
-.env 예시
+.env 예시 (로컬 테스트)
+
+```
 PORT=3000
 NODE_ENV=development
 
@@ -75,80 +47,69 @@ DB_PORT=3306
 DB_NAME=EMR
 DB_USER=root
 DB_PASS=0000
+```
 
+운영 환경에서는 평문 비밀번호나 root 계정 사용을 피하시고, 시크릿 매니저를 사용하세요.
 
-⚠️ 주의
-운영 환경에서는 root 계정과 평문 비밀번호 사용을 피하고,
-환경 변수 또는 시크릿 매니저를 사용하세요.
-(위 설정은 로컬 테스트용입니다)
+3. 데이터베이스 준비 (MySQL 예시)
 
-3️⃣ 데이터베이스 생성 (MySQL 사용 시)
+```sql
 CREATE DATABASE IF NOT EXISTS EMR
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
+```
 
+또는 저장소의 `create_database.sql`을 사용하세요.
 
-또는 create_database.sql 파일을 실행해도 됩니다.
+4. 서버 실행
 
-4️⃣ 서버 실행
+```bash
 npm run dev
 # 또는
 npm start
+```
 
-🌐 프론트엔드 접속
+서버 실행 후 브라우저에서 `http://localhost:3000/`에 접속하면 정적 프론트엔드를 확인할 수 있습니다.
 
-서버 실행 후 브라우저에서 아래 주소로 접속합니다.
+**프로젝트 구조 (주요 파일)**
 
-http://localhost:3000/
+- `server.js` — 서버 엔트리포인트
+- `app.js` — Express 앱 설정
+- `models/` — Sequelize 모델 정의 (`patient.js`, `encounter.js`, 등)
+- `routes/` — API 라우트
+- `public/` — 정적 프론트엔드 파일
+- `create_database.sql` — DB 초기화용 SQL
+- `.env.example` — 환경 변수 예시
 
+**간단한 API 요약**
+- 헬스 체크: GET `/api`
 
-프론트엔드는 public/ 폴더의 정적 파일로 제공됩니다.
+- 환자(Patients)
+	- GET  `/api/patients` — 환자 목록
+	- POST `/api/patients` — 환자 생성
+	- GET  `/api/patients/:id` — 환자 상세 (연관 방문 포함)
 
-Bootstrap + Vanilla JS 기반의 간단한 UI 예제가 포함되어 있습니다.
+- 방문(Encounters)
+	- GET  `/api/encounters`
+	- POST `/api/encounters`
+	- GET  `/api/encounters/:id` — 방문 상세 (의료기록/처방 포함)
 
-🔗 API 요약
-헬스 체크
-GET /api
+자세한 엔드포인트는 `routes/` 폴더를 확인하세요.
 
-환자(Patient)
-GET  /api/patients        # 환자 목록
-POST /api/patients        # 환자 생성
-GET  /api/patients/:id    # 환자 상세 (방문 포함)
+**개발 및 확장 제안**
+- 인증: JWT 기반 토큰 인증 도입
+- 입력값 검증: `Joi` 또는 `express-validator` 적용
+- 에러 처리 미들웨어 강화
+- 테스트: 단위 및 통합 테스트 추가
+- 배포용 DB 전환: PostgreSQL 등
+- 권한 관리: 역할 기반 접근 제어(RBAC)
 
-방문(Encounter)
-GET  /api/encounters
-POST /api/encounters
-GET  /api/encounters/:id  # 방문 상세 (의료기록/처방/물리치료 포함)
+**문제 해결 팁**
+- 서버 로그 확인
+- `.env` 설정 확인
+- DB 연결 정보 및 DB 실행 상태 확인
 
+**라이선스 / 용도**
+교육 및 개인 학습용으로 제공됩니다. 상업적 사용 시 별도 검토하세요.
 
-📌 자세한 엔드포인트는 routes/ 폴더를 참고하세요.
-
-🔐 개발 및 확장 제안
-
-토큰 기반 인증 (JWT)
-
-입력값 검증 (Joi / express-validator)
-
-에러 처리 미들웨어 강화
-
-단위 / 통합 테스트 추가
-
-PostgreSQL 등 배포용 DB 전환
-
-역할 기반 권한 관리 (의사 / 치료사 / 관리자)
-
-❗ 문제 발생 시
-
-서버 로그 확인
-
-.env 설정 값 확인
-
-DB 호스트 / 포트 / 계정 정보 확인
-
-MySQL 실행 여부 확인
-
-📄 라이선스 / 용도
-
-교육 및 개인 학습용
-
-상업적 사용 시 별도 검토 권장
+---
