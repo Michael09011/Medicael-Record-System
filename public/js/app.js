@@ -30,9 +30,8 @@ function renderStaff(list) {
       <div class="card h-100 shadow-sm staff-card">
         <div class="card-body">
           <h5 class="card-title mb-1">${u.name}</h5>
-          <div class="text-muted small">역할: ${u.role || '-'}</div>
-          <div class="mt-2">전화: ${u.phone || '-'}</div>
-          <div class="text-muted small">면허: ${u.licenseNo || '-'}</div>
+                <div class="text-muted small">역할: ${roleLabel(u.role)}</div>
+                <div class="mt-2">전화: ${u.phone || '-'}</div>
         </div>
       </div>
     `;
@@ -54,6 +53,21 @@ function insuranceLabel(code) {
   if (!code) return '-';
   const map = { LOCAL: '지역', WORK: '직장', AUTO: '자동차보험', TYPE1: '1종보호', TYPE2: '2종보호' };
   return map[code] || code;
+}
+
+function roleLabel(role) {
+  if (!role) return '-';
+  const map = {
+    'DOCTOR': '의사',
+    'NURSE': '간호사',
+    'THERAPIST': '치료사',
+    'PHYSIOTHERAPIST': '물리치료사',
+    'OCCUPATIONAL_THERAPIST': '작업치료사',
+    'ADMIN': '관리자',
+    'RECEPTION': '접수',
+    'LAB': '검사실'
+  };
+  return map[role] || role;
 }
 
 function formatPhone(v) {
@@ -272,6 +286,21 @@ function refreshAccountUI() {
     if (menuStaff) menuStaff.style.display = user ? '' : 'none';
 }
 
+// Register account-related actions after header is injected.
+window.registerAccountActions = function() {
+  const acctLoginEl = document.getElementById('acctLogin');
+  if (acctLoginEl) acctLoginEl.onclick = (ev) => { ev.preventDefault(); window.location.href = '/login.html'; };
+
+  const acctSignupEl = document.getElementById('acctSignup');
+  if (acctSignupEl) acctSignupEl.onclick = (ev) => { ev.preventDefault(); window.location.href = '/signup.html'; };
+
+  const acctProfileEl = document.getElementById('acctProfile');
+  if (acctProfileEl) acctProfileEl.onclick = (ev) => { ev.preventDefault(); openProfileModal(); };
+
+  const acctLogoutEl = document.getElementById('acctLogout');
+  if (acctLogoutEl) acctLogoutEl.onclick = (ev) => { ev.preventDefault(); setLoggedInUser(null); showAlert('로그아웃되었습니다.'); };
+};
+
 // helper to return prototype auth headers from sessionStorage
 function getAuthHeaders() {
   const u = getLoggedInUser();
@@ -281,6 +310,20 @@ function getAuthHeaders() {
     if (u.role) h['x-user-role'] = u.role;
   }
   return h;
+}
+
+// --- Translation helper (uses server proxy at /api/translate) ---
+async function translateText(text, target, source = 'auto') {
+  try {
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q: text, source, target })
+    });
+    if (!res.ok) return null;
+    const body = await res.json();
+    return body.translatedText || null;
+  } catch (err) { return null; }
 }
 
 // Profile modal handling: attach click to dropdown and initialize modal at runtime
@@ -444,12 +487,15 @@ async function showPatientDetail(patientId) {
   const res = await fetch(`/api/patients/${patientId}`);
   if (!res.ok) return showAlert('환자 상세를 불러오지 못했습니다.');
   const patient = await res.json();
+  const genderText = patient.gender ? (patient.gender === 'M' ? '남자' : (patient.gender === 'F' ? '여자' : patient.gender)) : '-';
 
   document.getElementById('patientModalLabel').textContent = `환자: ${patient.name}`;
   document.getElementById('patientInfo').innerHTML = `
     <div><strong>이름:</strong> ${patient.name}</div>
     <div><strong>생년월일:</strong> ${patient.birthDate || '-'} </div>
+    <div><strong>성별:</strong> ${genderText} </div>
     <div><strong>전화:</strong> ${patient.phone || '-'} </div>
+    <div><strong>주소:</strong> ${patient.address || '-'} </div>
     <div><strong>보험 유형:</strong> ${insuranceLabel(patient.insuranceType)}</div>
   `;
   document.getElementById('patientId').value = patient.id;

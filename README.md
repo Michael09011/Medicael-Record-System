@@ -102,12 +102,37 @@ npm start
 - 에러 처리 미들웨어 강화
 - 테스트: 단위 및 통합 테스트 추가
 - 배포용 DB 전환: PostgreSQL 등
+- 확장: PACS시스템과의 연계
 - 권한 관리: 역할 기반 접근 제어(RBAC)
 
 **문제 해결 팁**
 - 서버 로그 확인
 - `.env` 설정 확인
 - DB 연결 정보 및 DB 실행 상태 확인
+
+**번역 기능 (Translation)**
+
+- 헤더 번역: 사이트 상단에 Google Translate 위젯을 추가했습니다. 사용 가능한 언어는 한국어, 영어, 일본어, 중국어(간체/번체), 프랑스어, 스페인어, 독일어 등으로 제한되어 있으며, 위젯을 통해 페이지 전체를 자동 번역할 수 있습니다.
+- 서버 프록시: 클라이언트에서 직접 외부 번역 서비스를 호출하지 않도록 서버에 LibreTranslate 프록시 엔드포인트를 추가했습니다: `POST /api/translate`.
+	- 요청 형식: `Content-Type: application/json` / body: `{ "q": "텍스트", "source": "ko", "target": "en" }`
+	- 응답 예시: `{ "translatedText": "Hello" }` (공개 인스턴스에 따라 응답 구조가 다를 수 있음)
+- 한계 및 권장 사항:
+	- 공개 LibreTranslate 인스턴스는 속도 제한(rate limits)이 있으므로 대량 텍스트를 페이지 단위로 번역할 경우 제한에 걸릴 수 있습니다 (예: 10 req/min). 프로덕션에서는 자체 호스팅하거나 상업용 번역 API(유료)를 사용하는 것을 권장합니다.
+	- Google Translate 위젯은 빠르게 동작하지만 외부로 텍스트를 전송하므로 민감한 데이터를 번역할 때는 주의하세요.
+
+**번역 사용 방법**
+- 페이지 우측 상단의 번역 위젯에서 언어를 선택하면 Google 위젯이 페이지를 번역합니다.
+- LibreTranslate 프록시를 테스트하려면 터미널에서:
+
+```bash
+curl -X POST http://localhost:3000/api/translate \
+	-H "Content-Type: application/json" \
+	-d '{"q":"안녕하세요","source":"ko","target":"en"}'
+```
+
+응답으로 번역된 텍스트를 확인할 수 있습니다.
+
+**참고**: 변경사항이 바로 반영되지 않을 경우 브라우저 캐시를 삭제하고(`Ctrl+Shift+Delete`) 서버를 재시작(`npm run dev`)하세요.
 
 **라이선스 / 용도**
 교육 및 개인 학습용으로 제공됩니다. 상업적 사용 시 별도 검토하세요.

@@ -14,7 +14,8 @@
     "sequelize": "^6.32.1",
     "mysql2": "^3.3.1",
     "bcrypt": "^5.1.1",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
