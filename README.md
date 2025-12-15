@@ -1,6 +1,7 @@
 **프로젝트: EMR (Electronic Medical Record)**
 
 간단한 교육·개발용 전자 의무 기록(EMR) 웹 애플리케이션 템플릿입니다. 이 저장소는 Node.js 기반의 Express API와 정적 프론트엔드(`public/`)를 함께 제공합니다. 로컬에서 빠르게 실행하여 도메인 구조를 학습하거나 기능을 확장하는 목적에 적합합니다.
+<img width="1919" height="914" alt="스크린샷 2025-12-16 034114" src="https://github.com/user-attachments/assets/1535e3dd-ef80-4716-b819-092f1e1066c1" />
 
 **주요 기능**
 - Express 기반 REST API
