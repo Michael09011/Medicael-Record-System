@@ -1,4 +1,4 @@
-**프로젝트: Medical Record System**
+**Medical Record System**
 
 병원에서 물리치료사를 할 적에 EMR시스템도 경험해보고 수기 차트도 경험해보았습니다.
 EMR시스템 써보니까 기능은 많은데 너무 난잡하고 복잡했습니다.
