@@ -237,5 +237,3 @@ Commercial use should be reviewed separately.
 For questions or feedback:
 
 📧 michaela00u@gmail.com
-
-원하시면 다음도 바로 다듬어줄 수 있어요:
