@@ -1,61 +1,84 @@
-**Medical Record System**
+**🏥 Medical Record System (EMR)**
 
-병원에서 물리치료사를 할 적에 EMR시스템도 경험해보고 수기 차트도 경험해보았습니다.
+This project is a simple educational and development-oriented Electronic Medical Record (EMR) web application template.
 
-EMR시스템 써보니까 기능은 많은데 너무 난잡하고 복잡했습니다.
+While working as a physical therapist in a hospital, I experienced both modern EMR systems and traditional handwritten charts.
+Although existing EMR systems are powerful, I often felt they were overly complex and cluttered for everyday clinical workflows.
 
-병원에서 쓰던 것보단 초라하지만 제 손으로 한번 만들어보고 싶었습니다.
+This project may be modest compared to real-world hospital systems, but it represents my attempt to design and build a clean, understandable EMR system from scratch.
 
-간단한 교육·개발용 전자 의무 기록(EMR) 웹 애플리케이션 템플릿입니다. 
+With minimal SQL configuration, the application can be easily set up and run locally.
 
-SQL설정 정도만 하시면 간편하게 돌릴 수 있습니다.
+**📌 Overview ** 
+
+This repository provides:
+
+A Node.js-based Express REST API
+
+A static frontend served from the public/ directory
+
+It is well-suited for:
+
+Quickly running a local EMR system
+
+Learning domain-driven backend structures
+
+Extending features for educational or prototyping purposes
+
+<img width="1919" height="914" alt="EMR Screenshot" src="https://github.com/user-attachments/assets/1535e3dd-ef80-4716-b819-092f1e1066c1" />
+
+**✨ Key Features **
+
+REST API built with Express
+
+Model management using Sequelize ORM
+
+Database support:
+
+MySQL (development)
+
+SQLite (testing)
+
+Static frontend served from public/
+
+Basic EMR domain models:
+
+Patient
+
+Encounter
+
+Prescription
+
+** 🛠️ Tech Stack **
+
+Language: JavaScript (Node.js)
+
+Web Framework: Express
+
+ORM: Sequelize
+
+Database: MySQL (development), SQLite (testing)
+
+Frontend: HTML / CSS / Vanilla JavaScript (static files)
 
 
-이 저장소는 Node.js 기반의 Express API와 정적 프론트엔드(`public/`)를 함께 제공합니다. 
+✅ Prerequisites
 
-로컬에서 빠르게 실행하여 도메인 구조를 학습하거나 기능을 확장하는 목적에 적합합니다.
+Node.js v16 or higher
 
+MySQL (or SQLite for local testing)
 
-<img width="1919" height="914" alt="스크린샷 2025-12-16 034114" src="https://github.com/user-attachments/assets/1535e3dd-ef80-4716-b819-092f1e1066c1" />
-
-**주요 기능**
-- Express 기반 REST API
-- Sequelize ORM을 통한 모델 관리
-- MySQL 또는 SQLite 지원 (개발/테스트용)
-- 정적 프론트엔드 제공 (`public/`)
-- 기본 EMR 모델: 환자(Patient), 방문(Encounter), 처방(Prescription) 등
-
-**기술 스택**
-- 언어: JavaScript (Node.js)
-- 웹 프레임워크: Express
-- ORM: Sequelize
-- DB: MySQL (개발), SQLite (테스트)
-- 프론트엔드: HTML / CSS / Vanilla JS (정적 파일)
-
-[English](README.en.md) · [日本語](README.ja.md)
-
-**사전 요구 사항**
-- Node.js v16 이상
-- MySQL (또는 로컬 테스트용 SQLite)
-
-**빠른 시작**
-1. 의존성 설치
-
-```bash
+🚀 Quick Start
+1. Install dependencies
 npm install
-```
 
-2. 환경 변수 설정
+2. Environment configuration
 
-`.env.example`를 복사해 `.env`를 만든 뒤 필요한 값을 설정하세요.
+Copy .env.example to .env and configure the required values.
 
-```bash
 copy .env.example .env  # Windows (PowerShell / CMD)
-```
 
-.env 예시 (로컬 테스트)
-
-```
+Example .env (local development)
 PORT=3000
 NODE_ENV=development
 
@@ -65,96 +88,154 @@ DB_PORT=3306
 DB_NAME=EMR
 DB_USER=root
 DB_PASS=0000
-```
 
-운영 환경에서는 평문 비밀번호나 root 계정 사용을 피하시고, 시크릿 매니저를 사용하세요.
 
-3. 데이터베이스 준비 (MySQL 예시)
+⚠️ Note:
+For production environments, avoid using plaintext passwords or the root account.
+Use environment-specific credentials or a secure secret manager.
 
-```sql
+3. Prepare the database (MySQL example)
 CREATE DATABASE IF NOT EXISTS EMR
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
-```
 
-또는 저장소의 `create_database.sql`을 사용하세요.
 
-4. 서버 실행
+Alternatively, use create_database.sql provided in this repository.
 
-```bash
+4. Run the server
 npm run dev
-# 또는
+# or
 npm start
-```
 
-서버 실행 후 브라우저에서 `http://localhost:3000/`에 접속하면 정적 프론트엔드를 확인할 수 있습니다.
 
-**프로젝트 구조 (주요 파일)**
+After the server starts, open:
 
-- `server.js` — 서버 엔트리포인트
-- `app.js` — Express 앱 설정
-- `models/` — Sequelize 모델 정의 (`patient.js`, `encounter.js`, 등)
-- `routes/` — API 라우트
-- `public/` — 정적 프론트엔드 파일
-- `create_database.sql` — DB 초기화용 SQL
-- `.env.example` — 환경 변수 예시
+http://localhost:3000/
 
-**간단한 API 요약**
-- 헬스 체크: GET `/api`
 
-- 환자(Patients)
-	- GET  `/api/patients` — 환자 목록
-	- POST `/api/patients` — 환자 생성
-	- GET  `/api/patients/:id` — 환자 상세 (연관 방문 포함)
+to access the static frontend.
 
-- 방문(Encounters)
-	- GET  `/api/encounters`
-	- POST `/api/encounters`
-	- GET  `/api/encounters/:id` — 방문 상세 (의료기록/처방 포함)
+📁 Project Structure (Key Files)
 
-자세한 엔드포인트는 `routes/` 폴더를 확인하세요.
+server.js — Server entry point
 
-**개발 및 확장 제안**
-- 인증: JWT 기반 토큰 인증 도입
-- 입력값 검증: `Joi` 또는 `express-validator` 적용
-- 에러 처리 미들웨어 강화
-- 테스트: 단위 및 통합 테스트 추가
-- 배포용 DB 전환: PostgreSQL 등
-- 확장: PACS시스템과의 연계를 위한 파일 업로드,다운로드 기능
-- 권한 관리: 역할 기반 접근 제어(RBAC)
+app.js — Express app configuration
 
-**문제 해결 팁**
-- 서버 로그 확인
-- `.env` 설정 확인
-- DB 연결 정보 및 DB 실행 상태 확인
+models/ — Sequelize model definitions (patient.js, encounter.js, etc.)
 
-**번역 기능 (Translation)**
+routes/ — API routes
 
-- 헤더 번역: 사이트 상단에 Google Translate 위젯을 추가했습니다. 사용 가능한 언어는 한국어, 영어, 일본어, 중국어(간체/번체), 프랑스어, 스페인어, 독일어 등으로 제한되어 있으며, 위젯을 통해 페이지 전체를 자동 번역할 수 있습니다.
-- 서버 프록시: 클라이언트에서 직접 외부 번역 서비스를 호출하지 않도록 서버에 LibreTranslate 프록시 엔드포인트를 추가했습니다: `POST /api/translate`.
-	- 요청 형식: `Content-Type: application/json` / body: `{ "q": "텍스트", "source": "ko", "target": "en" }`
-	- 응답 예시: `{ "translatedText": "Hello" }` (공개 인스턴스에 따라 응답 구조가 다를 수 있음)
-- 한계 및 권장 사항:
-	- 공개 LibreTranslate 인스턴스는 속도 제한(rate limits)이 있으므로 대량 텍스트를 페이지 단위로 번역할 경우 제한에 걸릴 수 있습니다 (예: 10 req/min). 프로덕션에서는 자체 호스팅하거나 상업용 번역 API(유료)를 사용하는 것을 권장합니다.
-	- Google Translate 위젯은 빠르게 동작하지만 외부로 텍스트를 전송하므로 민감한 데이터를 번역할 때는 주의하세요.
+public/ — Static frontend files
 
-**번역 사용 방법**
-- 페이지 우측 상단의 번역 위젯에서 언어를 선택하면 Google 위젯이 페이지를 번역합니다.
-- LibreTranslate 프록시를 테스트하려면 터미널에서:
+create_database.sql — Database initialization script
 
-```bash
+.env.example — Environment variable template
+
+🔌 API Overview
+Health Check
+
+GET /api
+
+Patients
+
+GET /api/patients — List patients
+
+POST /api/patients — Create a patient
+
+GET /api/patients/:id — Patient details (includes related encounters)
+
+Encounters
+
+GET /api/encounters
+
+POST /api/encounters
+
+GET /api/encounters/:id — Encounter details (includes medical records and prescriptions)
+
+For full API details, see the routes/ directory.
+
+🔧 Development & Extension Ideas
+
+Authentication: JWT-based token authentication
+
+Input validation: Joi or express-validator
+
+Enhanced error-handling middleware
+
+Testing: unit and integration tests
+
+Production database: PostgreSQL
+
+Extensions:
+
+File upload/download for PACS integration
+
+Authorization: Role-Based Access Control (RBAC)
+
+🧩 Troubleshooting Tips
+
+Check server logs
+
+Verify .env configuration
+
+Confirm database credentials and DB service status
+
+🌐 Translation Features
+Header Translation (Google Translate Widget)
+
+A Google Translate widget is added to the site header
+
+Supported languages include:
+
+Korean, English, Japanese, Chinese (Simplified/Traditional), French, Spanish, German, etc.
+
+Automatically translates the entire page
+
+Server Proxy (LibreTranslate)
+
+To avoid direct client-side calls to external translation services, a server-side proxy endpoint is provided:
+
+POST /api/translate
+
+
+Request
+
+{
+  "q": "Text to translate",
+  "source": "ko",
+  "target": "en"
+}
+
+
+Response (example)
+
+{
+  "translatedText": "Hello"
+}
+
+
+⚠️ Limitations & Recommendations
+
+Public LibreTranslate instances may enforce rate limits (e.g., 10 requests/min)
+
+For production use, self-hosting or a commercial translation API is recommended
+
+Google Translate Widget sends content to external services — avoid translating sensitive medical data
+
+🧪 Translation Test (CLI)
 curl -X POST http://localhost:3000/api/translate \
-	-H "Content-Type: application/json" \
-	-d '{"q":"안녕하세요","source":"ko","target":"en"}'
-```
+  -H "Content-Type: application/json" \
+  -d '{"q":"안녕하세요","source":"ko","target":"en"}'
 
-응답으로 번역된 텍스트를 확인할 수 있습니다.
+📄 License / Usage
 
-**참고**: 변경사항이 바로 반영되지 않을 경우 브라우저 캐시를 삭제하고(`Ctrl+Shift+Delete`) 서버를 재시작(`npm run dev`)하세요.
+This project is provided for educational and personal learning purposes.
+Commercial use should be reviewed separately.
 
-**라이선스 / 용도**
-교육 및 개인 학습용으로 제공됩니다. 상업적 사용 시 별도 검토하세요.
+📬 Contact
 
----
+For questions or feedback:
 
-문의: michaela00u@gmail.com
+📧 michaela00u@gmail.com
+
+원하시면 다음도 바로 다듬어줄 수 있어요:
