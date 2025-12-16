@@ -1,4 +1,4 @@
- #__🏥 Medical Record System (EMR)__
+ __🏥 Medical Record System (EMR)__
 
 A simple educational Electronic Medical Record (EMR) web application.
 
