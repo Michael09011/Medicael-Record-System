@@ -57,4 +57,5 @@ For education and personal learning purposes only.
  __📬 Contact__
 
 <img width="87" height="28" alt="image" src="https://github.com/user-attachments/assets/e4cbe283-f910-4982-9e74-ce8786068038" />
+
  michaela00u@gmail.com
