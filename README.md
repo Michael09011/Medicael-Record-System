@@ -1,61 +1,70 @@
- __🏥 Medical Record System (EMR)__
+# 🏥 Medical Record System (EMR)
 
-A simple educational Electronic Medical Record (EMR) web application.
+A simple educational **Electronic Medical Record (EMR)** web application.
 
-I experienced both modern EMR systems and handwritten charts while working in a hospital.
-Although existing EMRs are powerful, many felt overly complex, so I built a clean and minimal EMR system myself for learning purposes.
+Inspired by my firsthand experience with both modern EMR systems and traditional handwritten charts while working in a hospital. While existing EMRs are powerful, many felt overly complex, so I built this clean and minimal EMR system for learning purposes.
 
-This project provides a Node.js Express API with a static frontend, and can be run locally with minimal database setup.
-
- __✨ Features__
-
-Express-based REST API
-
-Sequelize ORM
-
-MySQL (dev) / SQLite (test) support
-
-Static frontend (public/)
-
-Basic EMR models: Patient, Encounter, Prescription
-
- __🛠 Tech Stack__
-
-JavaScript (Node.js)
-
-Express
-
-Sequelize
-
-MySQL
-
-HTML / CSS / Vanilla JS
-
-<img width="69" height="20" alt="image" src="https://github.com/user-attachments/assets/788d2f7e-0bab-46ae-96ab-ae9b9fb5f9ac" />
-<img width="85" height="20" alt="image" src="https://github.com/user-attachments/assets/c6c87637-1676-4c5b-9c24-9931165ddbcc" />
-<img width="71" height="20" alt="image" src="https://github.com/user-attachments/assets/a72fcbec-58bc-46cb-a3ad-3ec66769a99e" />
-<img width="65" height="20" alt="image" src="https://github.com/user-attachments/assets/42b2282c-4a8f-4ea5-8a0e-1b2639db9f38" />
-<img width="59" height="20" alt="image" src="https://github.com/user-attachments/assets/5519299a-33d2-4f19-bf05-38d67c809483" />
-<img width="39" height="20" alt="image" src="https://github.com/user-attachments/assets/602b784e-7721-4c64-9978-fee712766b59" />
-<img width="90" height="20" alt="image" src="https://github.com/user-attachments/assets/c0d5b264-5551-49e3-8d9a-cd29028dc9a4" />
+This project provides a Node.js Express API with a static frontend and can be run locally with minimal database setup.
+<p align="center">
+<img width="1919" height="914" alt="스크린샷 2025-12-16 034114" src="https://github.com/user-attachments/assets/42840608-ade9-495e-b34d-27b31372b2b7" />
+</p>
 
 
 
+---
 
- __🚀 Quick Start__
-```
+## ✨ Features
+
+- **Express-based REST API**: Lightweight and fast backend structure.
+- **Sequelize ORM**: Simplified database modeling and migrations.
+- **Multi-DB Support**: MySQL for development and SQLite for testing.
+- **Static Frontend**: Easy-to-manage frontend located in the `public/` directory.
+- **Core EMR Models**: Includes essential models such as **Patient, Encounter, and Prescription**.
+
+---
+
+## 🛠 Tech Stack
+
+<p align="left">
+  <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
+  <img src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white">
+  <img src="https://img.shields.io/badge/sequelize-52B0E7?style=for-the-badge&logo=Sequelize&logoColor=white">
+  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+  <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+  <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+</p>
+
+---
+
+### 🚀 Quick Start
+
+To get the system running locally:
+
+### 1. Install Dependencies
+```bash
 npm install
-
+```
+### 2. Start Development Server
+```
 npm run dev
 ```
-Open: http://localhost:3000
+### 3. Access the Application
+```
+Open the following URL in your browser:
 
- __📄 Usage__
+http://localhost:3000
+```
+## 📄 Usage
 
-For education and personal learning purposes only.
+> [!NOTE]  
+> This project is developed strictly for education and personal learning purposes only.  
+> It should not be used in a real medical environment.
 
- __📬 Contact__
 
-<img width="87" height="28" alt="image" src="https://github.com/user-attachments/assets/e4cbe283-f910-4982-9e74-ce8786068038" />
+## 📬 Contact
 
- michaela00u@gmail.com
+If you have any questions, feel free to reach out:
+<p align="left"> <a href="mailto:michaela00u@gmail.com"> <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail Badge" /> </a> </p>
+Email: michaela00u@gmail.com
+
